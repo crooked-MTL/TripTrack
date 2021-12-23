@@ -3,22 +3,29 @@ import styled from 'styled-components';
 import Logo from "../assets/TripTrack-Logo.png"
 import {FiUser} from "react-icons/fi"
 import { NavLink } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const Header = () => {
+const {loginWithRedirect}=useAuth0();
+const {logout} = useAuth0();
+
     return (
         <>
         <MainDiv>
         <ContentContainer>
             <LogoDiv>
-                <HomeLink to="/">
+                <Links to="/">
                 <LogoImg src={Logo}/>
-                </HomeLink>
+                </Links>
             </LogoDiv>
             <UserDiv>
-                <Button>SIGN UP</Button>
-                <Button>LOG IN</Button>
+                <Button onClick={()=>loginWithRedirect()}>LOG IN</Button>
+                <Button onClick={()=>logout({returnTo: 'http://localhost:3000'})}>LOG OUT</Button>
+
+                <Links to="/profile/:profileId">
                 <FiUser style={iconstyling} size={35}/>
-            </UserDiv>
+                </Links>
+                </UserDiv>
         </ContentContainer>
         </MainDiv>
         </>
@@ -27,7 +34,7 @@ const Header = () => {
 const LogoImg=styled.img`
 width:75%;
 `;
-const HomeLink=styled(NavLink)`
+const Links=styled(NavLink)`
 
 `
 const Button=styled.button`
@@ -72,10 +79,6 @@ align-items: center;
 const LogoDiv=styled.div`
 `;
 
-const Title=styled.h1`
-color: var(--color-title-red);
-font-size: 35px;
-`;
 
 const UserDiv=styled.div`
 display: flex;
